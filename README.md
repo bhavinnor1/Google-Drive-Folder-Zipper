@@ -23,7 +23,7 @@ If your folder has 100 files
 
 100> I want to eat your pancreas.mp4
 
-[Note:- Put an "e" after the entering path with a space in between to access file exclusion if you don't put "e" then program will make a zip file of the whole selected folder.]
+[Note:- Put "y" when prompted to access file exclusion if you put "n" then program will make a zip file of the whole selected folder.]
 
 You can put
 
