@@ -1,4 +1,6 @@
 
+# https://github.com/bhavinnor1/Google-Drive-Folder-Zipper
+
 # importing required modules
 from subprocess import getoutput
 from IPython.display import display, clear_output, HTML
@@ -52,17 +54,27 @@ def main():
           n+=1
           alist.append("/content/drive/MyDrive/"+name)
           
-    
     directory = input("\nFolder: ")
-    dir_split = directory.strip().split(" ")
-    if len(dir_split)==2 and len(dir_split[0])>0 and len(dir_split[1])==1:
-       if dir_split[1]=="e":
+    while True:
+      exclude_confirm=input("Do you want to exclude files\nin this folder?\n(Y or n)")
+      cleaned_input=exclude_confirm.lower().strip()
+      if cleaned_input=="" or cleaned_input=='y' or cleaned_input=='yes':
+        exclude_confirm=True
+        break
+      elif cleaned_input=='n' or cleaned_input=='no':
+        exclude_confirm=False
+        break
+      else:
+        print('\n-----------\nType Y or n')
+
+    # dir_split = directory.strip().split(" ")
+    if exclude_confirm:
           clear_output()
           print ("Folder:",directory,"\n[Exclude]")
-          if dir_split[0].isdigit():
-             directory=alist[int(dir_split[0].strip())-1]
-          else:
-             directory=dir_split[0].strip()
+          if directory.isdigit():
+             directory=alist[int(directory.strip())-1]
+          # else:
+          #    directory=directory
           print (directory)
           lssdir=os.listdir(directory)
           print ("\n")
@@ -87,7 +99,7 @@ def main():
              elif i!="":
                 exclude_list.append(ziplist[int(i.strip())-1])
           exclude_files=True
-    elif directory.strip().split(" ")[0].isdigit():
+    elif directory.isdigit():
        clear_output(wait=True)
        print("\nFolder:",directory)
        directory=alist[int(directory.strip().split(" ")[0].strip())-1]
@@ -135,8 +147,7 @@ def main():
     print (nameofzip)
     same_count=0
     for i in ls:
-       if i.find(nameofzip):
-          
+       if i.find(nameofzip)==0:
           same_count+=1
     if same_count>0:
        nameofzip=nameofzip.split(".")[0]+f" ({same_count}).zip"
@@ -232,7 +243,7 @@ def get_shareable_link(file_path):
   fid = getoutput("xattr -p 'user.drive.id' " + "'" + file_path + "'")
   # print (fid) # for debugging
   if "not found" in fid:
-     !apt-get install xattr > /dev/null
+     os.system('apt-get install xattr > /dev/null')
      get_link(file_path)
   else:
      return fid
